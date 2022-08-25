@@ -1,6 +1,9 @@
-# rrm-structure
+# RRS Agents example
 
-Code containing basis classes for radio resource management.
+Code containing examples using the [sixg_radio_mgmt](https://github.com/lasseufpa/sixg_radio_mgmt) repo.
+
+## Cloning
+Remember to clone submodules using `git clone --recurse-submodules git@github.com:lasseufpa/sixg_scheduling_example.git`
 
 ## Install
 

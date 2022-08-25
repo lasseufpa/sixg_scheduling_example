@@ -2,8 +2,7 @@ from typing import Union
 
 import numpy as np
 
-from sixg_radio_mgmt import Agent
-from sixg_radio_mgmt import CommunicationEnv
+from sixg_radio_mgmt import Agent, CommunicationEnv
 
 
 class RoundRobin(Agent):

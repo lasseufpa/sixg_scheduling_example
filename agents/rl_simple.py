@@ -4,8 +4,7 @@ import numpy as np
 from gym import spaces
 from stable_baselines3.sac.sac import SAC
 
-from sixg_radio_mgmt import Agent
-from sixg_radio_mgmt import CommunicationEnv
+from sixg_radio_mgmt import Agent, CommunicationEnv
 
 
 class RLSimple(Agent):

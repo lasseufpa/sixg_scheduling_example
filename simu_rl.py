@@ -4,8 +4,8 @@ from tqdm import tqdm
 
 from agents.rl_simple import RLSimple
 from channels.simple import SimpleChannel
-from sixg_radio_mgmt import CommunicationEnv
 from mobilities.simple import SimpleMobility
+from sixg_radio_mgmt import CommunicationEnv
 from traffics.simple import SimpleTraffic
 
 seed = 10
