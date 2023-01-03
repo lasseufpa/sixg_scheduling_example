@@ -1,6 +1,5 @@
-import yaml
-
 import numpy as np
+import yaml
 
 number_basestations = 5
 number_slices = 10
