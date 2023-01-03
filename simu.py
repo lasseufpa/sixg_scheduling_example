@@ -17,7 +17,12 @@ comm_env = CommunicationEnv(
     rng=rng,
 )
 
-round_robin = RoundRobin(comm_env, 2, 2, np.array([2, 2]))
+round_robin = RoundRobin(
+    comm_env,
+    comm_env.max_number_ues,
+    comm_env.max_number_basestations,
+    comm_env.num_available_rbs,
+)
 comm_env.set_agent_functions(
     round_robin.obs_space_format,
     round_robin.action_format,
