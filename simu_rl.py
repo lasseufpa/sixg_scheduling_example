@@ -3,9 +3,9 @@ from stable_baselines3.common.env_checker import check_env
 from tqdm import tqdm
 
 from agents.rl_simple import RLSimple
+from associations.simple import SimpleAssociation
 from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
-from associations.simple import SimpleAssociation
 from sixg_radio_mgmt import CommunicationEnv
 from traffics.simple import SimpleTraffic
 
