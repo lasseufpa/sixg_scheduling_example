@@ -6,6 +6,7 @@ from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
 from sixg_radio_mgmt import CommunicationEnv
 from traffics.simple import SimpleTraffic
+from associations.simple_slice import SimpleSliceAssociation
 
 seed = 10
 rng = np.random.default_rng(seed) if seed != -1 else np.random.default_rng()
@@ -13,6 +14,7 @@ comm_env = CommunicationEnv(
     SimpleChannel,
     SimpleTraffic,
     SimpleMobility,
+    SimpleSliceAssociation,
     "simple_slice",
     rng=rng,
 )

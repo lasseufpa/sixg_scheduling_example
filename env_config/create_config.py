@@ -1,9 +1,9 @@
 import numpy as np
 import yaml
 
-number_basestations = 5
+number_basestations = 1
 number_slices = 10
-number_ues = 100
+number_ues = 1000
 
 config = {
     "basestations": {
@@ -27,12 +27,6 @@ config = {
         "max_buffer_pkts": np.repeat(1024, number_ues).tolist(),
         "pkt_sizes": np.repeat(8192 * 8, number_ues).tolist(),
     },
-    "associations": {
-        "timeline": [],
-        "basestation_ue_assoc": [],
-        "basestation_slice_assoc": [],
-        "slice_ue_assoc": [],
-    },
     "simulation": {
         "simu_name": "mult_bs",
         "max_number_steps": 10,
@@ -41,5 +35,5 @@ config = {
     },
 }
 
-with open("./env_config/mult_bs.yml", "w") as f:
+with open("./env_config/mult_slice.yml", "w") as f:
     yaml.dump(config, f, default_flow_style=None)

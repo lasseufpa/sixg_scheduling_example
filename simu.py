@@ -4,6 +4,7 @@ from tqdm import tqdm
 from agents.round_robin import RoundRobin
 from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
+from associations.simple import SimpleAssociation
 from sixg_radio_mgmt import CommunicationEnv
 from traffics.simple import SimpleTraffic
 
@@ -13,6 +14,7 @@ comm_env = CommunicationEnv(
     SimpleChannel,
     SimpleTraffic,
     SimpleMobility,
+    SimpleAssociation,
     "simple",
     rng=rng,
 )

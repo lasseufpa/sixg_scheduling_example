@@ -5,6 +5,7 @@ from tqdm import tqdm
 from agents.rl_simple import RLSimple
 from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
+from associations.simple import SimpleAssociation
 from sixg_radio_mgmt import CommunicationEnv
 from traffics.simple import SimpleTraffic
 
@@ -14,6 +15,7 @@ comm_env = CommunicationEnv(
     SimpleChannel,
     SimpleTraffic,
     SimpleMobility,
+    SimpleAssociation,
     "simple",
     rng=rng,
     obs_space=RLSimple.get_obs_space,
