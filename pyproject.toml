@@ -1,5 +1,25 @@
+[project]
+name = "sixg_scheduling_example"
+version = "1.0.0"
+authors = [
+  { name="Cleverson Nahum", email="cleversonahum@gmail.com" },
+]
+description = "Example of implementation of radio resource scheduling (RRS) agents using the sixg_radio_mgmt basis."
+readme = "README.md"
+license = { file="LICENSE.md" }
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/lasseufpa/sixg_scheduling_example"
+"Bug Tracker" = "https://github.com/lasseufpa/sixg_scheduling_example/issues"
+
 [tool.black]
-line-length = 88
+line-length = 79
 include = '\.pyi?$'
 exclude = '''
 /(
