@@ -14,7 +14,6 @@ class SimpleAssociation(Association):
         max_number_slices: int,
         rng: np.random.Generator = np.random.default_rng(),
     ) -> None:
-
         super().__init__(
             ues,
             max_number_ues,
@@ -32,7 +31,6 @@ class SimpleAssociation(Association):
         step_number: int,
         episode_number: int,
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[dict]]:
-
         return (
             basestation_ue_assoc,
             basestation_slice_assoc,

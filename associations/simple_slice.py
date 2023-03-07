@@ -14,7 +14,6 @@ class SimpleSliceAssociation(Association):
         max_number_slices: int,
         rng: np.random.Generator = np.random.default_rng(),
     ) -> None:
-
         super().__init__(
             ues,
             max_number_ues,
@@ -32,7 +31,6 @@ class SimpleSliceAssociation(Association):
         step_number: int,
         episode_number: int,
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[dict]]:
-
         if step_number == 4:
             basestation_slice_assoc = np.array([[1, 1], [1, 1]])
         elif step_number == 7:
