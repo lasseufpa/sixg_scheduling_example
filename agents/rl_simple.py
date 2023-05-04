@@ -1,7 +1,7 @@
 from typing import Union
 
 import numpy as np
-from gym import spaces
+from gymnasium import spaces
 from stable_baselines3.sac.sac import SAC
 
 from sixg_radio_mgmt import Agent, CommunicationEnv
@@ -79,7 +79,7 @@ class RLSimple(Agent):
 
     @staticmethod
     def get_obs_space() -> spaces.Box:
-        return spaces.Box(low=0, high=np.inf, shape=(2 * 2,), dtype=np.float32)
+        return spaces.Box(low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64)
 
     @staticmethod
     def action_format(
