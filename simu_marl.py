@@ -16,6 +16,7 @@ comm_env = MARLCommEnv(
     SimpleMobility,
     SimpleAssociation,
     "simple",
+    number_agents=2,
 )
 
 round_robin = RoundRobin(
