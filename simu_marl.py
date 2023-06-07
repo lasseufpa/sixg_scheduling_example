@@ -8,6 +8,8 @@ from mobilities.simple import SimpleMobility
 from sixg_radio_mgmt import MARLCommEnv
 from traffics.simple import SimpleTraffic
 
+from pettingzoo.test import api_test
+
 seed = 10
 
 comm_env = MARLCommEnv(
@@ -19,6 +21,8 @@ comm_env = MARLCommEnv(
     number_agents=2,
 )
 
+api_test(comm_env, num_cycles=1000, verbose_progress=False)
+exit()
 round_robin = RoundRobin(
     comm_env,
     comm_env.max_number_ues,

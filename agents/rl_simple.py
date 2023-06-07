@@ -83,8 +83,9 @@ class RLSimple(Agent):
 
     @staticmethod
     def action_format(
-        action: np.ndarray,
+        action: Union[np.ndarray, dict],
     ) -> np.ndarray:
+        action = np.array(action)
         action = np.reshape(action, (2, 2, 2))
         sched_decision = np.copy(action)
         sched_decision[0, 0] = (action[0, 0] >= action[0, 1]).astype(int)
