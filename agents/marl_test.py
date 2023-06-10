@@ -1,12 +1,10 @@
 from typing import Union
 
 import numpy as np
+from gymnasium import spaces
+from pettingzoo import AECEnv
 
 from sixg_radio_mgmt import Agent, CommunicationEnv
-
-from gymnasium import spaces
-
-from pettingzoo import AECEnv
 
 
 class MARLTest(Agent):

@@ -1,4 +1,5 @@
 import numpy as np
+from pettingzoo.test import api_test
 from tqdm import tqdm
 
 from agents.marl_test import MARLTest
@@ -7,8 +8,6 @@ from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
 from sixg_radio_mgmt import MARLCommEnv
 from traffics.simple import SimpleTraffic
-
-from pettingzoo.test import api_test
 
 seed = 10
 
