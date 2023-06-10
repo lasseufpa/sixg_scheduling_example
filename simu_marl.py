@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 
-from agents.round_robin import RoundRobin
+from agents.marl_test import MARLTest
 from associations.simple import SimpleAssociation
 from channels.simple import SimpleChannel
 from mobilities.simple import SimpleMobility
@@ -12,16 +12,31 @@ from pettingzoo.test import api_test
 
 seed = 10
 
-comm_env = MARLCommEnv(
+marl_comm_env = MARLCommEnv(
     SimpleChannel,
     SimpleTraffic,
     SimpleMobility,
     SimpleAssociation,
     "simple",
+    "agent_marl_test",
+    seed,
+    obs_space=MARLTest.get_obs_space,
+    action_space=MARLTest.get_action_space,
     number_agents=2,
 )
+marl_test_agent = MARLTest(
+    marl_comm_env,
+    marl_comm_env.comm_env.max_number_ues,
+    marl_comm_env.comm_env.max_number_basestations,
+    marl_comm_env.comm_env.num_available_rbs,
+)
+marl_comm_env.comm_env.set_agent_functions(
+    marl_test_agent.obs_space_format,
+    marl_test_agent.action_format,
+    marl_test_agent.calculate_reward,
+)
 
-api_test(comm_env, num_cycles=1000, verbose_progress=False)
+api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
 exit()
 round_robin = RoundRobin(
     comm_env,
