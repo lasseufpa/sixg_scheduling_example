@@ -49,17 +49,17 @@ class MARLTest(Agent):
     @staticmethod
     def get_action_space() -> dict:
         return {
+            "player_0": spaces.Box(low=-1, high=1, shape=(2 * 2 * 2,)),
             "player_1": spaces.Box(low=-1, high=1, shape=(2 * 2 * 2,)),
-            "player_2": spaces.Box(low=-1, high=1, shape=(2 * 2 * 2,)),
         }
 
     @staticmethod
     def get_obs_space() -> dict:
         return {
-            "player_1": spaces.Box(
+            "player_0": spaces.Box(
                 low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
             ),
-            "player_2": spaces.Box(
+            "player_1": spaces.Box(
                 low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
             ),
         }
