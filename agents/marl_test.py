@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -19,32 +19,26 @@ class MARLTest(Agent):
             env, max_number_ues, max_number_basestations, num_available_rbs
         )
 
-    def step(self, obs_space: Union[np.ndarray, dict]) -> np.ndarray:
-        allocation_rbs = [
-            np.zeros(
-                (self.max_number_ues, self.num_available_rbs[basestation])
-            )
-            for basestation in np.arange(self.max_number_basestations)
-        ]
-        for basestation in np.arange(self.max_number_basestations):
-            ue_idx = 0
-            rb_idx = 0
-            while rb_idx < self.num_available_rbs[basestation]:
-                if obs_space[basestation][ue_idx] == 1:
-                    allocation_rbs[basestation][ue_idx][rb_idx] += 1
-                    rb_idx += 1
-                ue_idx += 1 if ue_idx + 1 != self.max_number_ues else -ue_idx
+    def step(
+        self, agent: str, obs_space: Optional[Union[np.ndarray, dict]]
+    ) -> np.ndarray:
+        if agent == "player_0":  # Basestation 1
+            return np.array([[1, 0], [0, 1]])
+        else:  # Basestation 2
+            return np.array([[1, 0], [0, 1]])
 
-        return np.array(allocation_rbs)
-
-    def obs_space_format(self, obs_space: dict) -> np.ndarray:
-        return np.zeros(4)
+    def obs_space_format(self, obs_space: dict) -> Union[np.ndarray, dict]:
+        return {
+            "player_0": np.zeros(4),
+            "player_1": np.zeros(4),
+        }
 
     def calculate_reward(self, obs_space: dict) -> float:
         return 0
 
     def action_format(self, action: Union[np.ndarray, dict]) -> np.ndarray:
-        return np.array(action)
+        assert isinstance(action, dict), "Action must be a dictionary"
+        return np.array([action["player_0"], action["player_1"]])
 
     @staticmethod
     def get_action_space() -> dict:
