@@ -35,7 +35,7 @@ marl_comm_env.comm_env.set_agent_functions(
     marl_test_agent.calculate_reward,
 )
 
-# api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
+api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
 
 marl_comm_env.reset(seed=seed)
 for agent in marl_comm_env.agent_iter():
