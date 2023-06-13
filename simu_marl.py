@@ -1,5 +1,9 @@
 import numpy as np
 from pettingzoo.test import api_test, seed_test
+from ray import air, tune
+from ray.rllib.algorithms.pg import PG, PGConfig, PGTorchPolicy
+from ray.rllib.env import PettingZooEnv
+from ray.tune.registry import register_env
 from tqdm import tqdm
 
 from agents.marl_test import MARLTest
@@ -35,12 +39,26 @@ marl_comm_env.comm_env.set_agent_functions(
     marl_test_agent.calculate_reward,
 )
 
-api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
+# env_creator = lambda config: MARLCommEnv.env(num_floors=config.get("num_floors", 4))
+register_env("marl_comm_env", lambda config: PettingZooEnv(marl_comm_env))
 
-marl_comm_env.reset(seed=seed)
-for agent in marl_comm_env.agent_iter():
-    obs, reward, termination, truncation, info = marl_comm_env.last()
-    if termination:
-        break
-    sched_decision = marl_test_agent.step(agent, obs)
-    marl_comm_env.step(sched_decision)
+stop = {
+    "training_iteration": 20,
+    "timesteps_total": 20,
+}
+
+config = PGConfig().environment("marl_comm_env").framework("torch")
+
+results = tune.Tuner(
+    "PG", param_space=config, run_config=air.RunConfig(stop=stop, verbose=1)
+).fit()
+
+# api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
+
+# marl_comm_env.reset(seed=seed)
+# for agent in marl_comm_env.agent_iter():
+#     obs, reward, termination, truncation, info = marl_comm_env.last()
+#     if termination:
+#         break
+#     sched_decision = marl_test_agent.step(agent, obs)
+#     marl_comm_env.step(sched_decision)
