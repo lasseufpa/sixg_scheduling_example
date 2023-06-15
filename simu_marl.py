@@ -51,11 +51,9 @@ config = PGConfig().environment("marl_comm_env").framework("torch")
 
 algo = config.build()
 results = algo.train()
-# results = tune.Tuner(
-#     "PG", param_space=config, run_config=air.RunConfig(stop=stop, verbose=1)
-# ).fit()
-
-# api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
+print(
+    f"\\n\n\n########################\n{results}\n########################\n\n\n"
+)
 
 # marl_comm_env.reset(seed=seed)
 # for agent in marl_comm_env.agent_iter():
