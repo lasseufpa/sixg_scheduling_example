@@ -3,6 +3,7 @@ from pettingzoo.test import api_test, seed_test
 from ray import air, tune
 from ray.rllib.algorithms.pg import PG, PGConfig, PGTorchPolicy
 from ray.rllib.env import PettingZooEnv
+from ray.tune.logger import pretty_print
 from ray.tune.registry import register_env
 from tqdm import tqdm
 
@@ -39,21 +40,16 @@ marl_comm_env.comm_env.set_agent_functions(
     marl_test_agent.calculate_reward,
 )
 
-# env_creator = lambda config: MARLCommEnv.env(num_floors=config.get("num_floors", 4))
 register_env("marl_comm_env", lambda config: PettingZooEnv(marl_comm_env))
-
-stop = {
-    "training_iteration": 20,
-    "timesteps_total": 20,
-}
 
 config = PGConfig().environment("marl_comm_env").framework("torch")
 
 algo = config.build()
-results = algo.train()
-print(
-    f"\\n\n\n########################\n{results}\n########################\n\n\n"
-)
+
+total_train_steps = 10
+for _ in range(total_train_steps):
+    algo.train()
+pretty_print(algo.evaluate())
 
 # marl_comm_env.reset(seed=seed)
 # for agent in marl_comm_env.agent_iter():
