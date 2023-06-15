@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Optional, Union
 
 import numpy as np
 from gymnasium import spaces
@@ -23,14 +23,14 @@ class MARLTest(Agent):
         self, agent: str, obs_space: Optional[Union[np.ndarray, dict]]
     ) -> np.ndarray:
         if agent == "player_0":  # Basestation 1
-            return np.array([[1, 0], [0, 1]])
+            return np.array([1, 0, 0, 1])
         else:  # Basestation 2
-            return np.array([[1, 0], [0, 1]])
+            return np.array([1, 0, 0, 1])
 
     def obs_space_format(self, obs_space: dict) -> Union[np.ndarray, dict]:
         return {
-            "player_0": np.zeros(4),
-            "player_1": np.zeros(4),
+            "player_0": np.zeros(4, dtype=np.float64),
+            "player_1": np.zeros(4, dtype=np.float64),
         }
 
     def calculate_reward(self, obs_space: dict) -> float:
@@ -38,13 +38,43 @@ class MARLTest(Agent):
 
     def action_format(self, action: Union[np.ndarray, dict]) -> np.ndarray:
         assert isinstance(action, dict), "Action must be a dictionary"
-        return np.array([action["player_0"], action["player_1"]])
+
+        def select_ue(action_bs):
+            action_bs_writtable = (
+                action_bs.copy()
+            )  # Ray puts actions in read-only mode
+            if action_bs_writtable[0, 0] >= action_bs_writtable[1, 0]:
+                action_bs_writtable[0, 0] = 1
+                action_bs_writtable[1, 0] = 0
+            else:
+                action_bs_writtable[0, 0] = 0
+                action_bs_writtable[1, 0] = 1
+
+            if action_bs_writtable[0, 1] >= action_bs_writtable[1, 1]:
+                action_bs_writtable[0, 1] = 1
+                action_bs_writtable[1, 1] = 0
+            else:
+                action_bs_writtable[0, 1] = 0
+                action_bs_writtable[1, 1] = 1
+
+            return action_bs_writtable
+
+        # print(action["player_0"].shape)
+        basestation_1 = select_ue(np.reshape(action["player_0"], (2, 2)))
+        basestation_2 = select_ue(np.reshape(action["player_1"], (2, 2)))
+
+        return np.array(
+            [
+                basestation_1,
+                basestation_2,
+            ]
+        )
 
     @staticmethod
     def get_action_space() -> dict:
         return {
-            "player_0": spaces.Box(low=-1, high=1, shape=(2 * 2 * 2,)),
-            "player_1": spaces.Box(low=-1, high=1, shape=(2 * 2 * 2,)),
+            "player_0": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
+            "player_1": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
         }
 
     @staticmethod
