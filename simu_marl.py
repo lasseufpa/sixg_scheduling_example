@@ -1,7 +1,7 @@
 import numpy as np
 from pettingzoo.test import api_test, seed_test
 from ray import air, tune
-from ray.rllib.algorithms.pg import PG, PGConfig, PGTorchPolicy
+from ray.rllib.algorithms.ppo import PPO, PPOConfig, PPOTorchPolicy
 from ray.rllib.env import PettingZooEnv
 from ray.tune.logger import pretty_print
 from ray.tune.registry import register_env
@@ -42,7 +42,7 @@ marl_comm_env.comm_env.set_agent_functions(
 
 register_env("marl_comm_env", lambda config: PettingZooEnv(marl_comm_env))
 
-config = PGConfig().environment("marl_comm_env").framework("torch")
+config = PPOConfig().environment("marl_comm_env").framework("torch")
 
 algo = config.build()
 
