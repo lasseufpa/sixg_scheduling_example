@@ -28,13 +28,34 @@ class MARLTest(Agent):
             return np.array([1, 0, 0, 1])
 
     def obs_space_format(self, obs_space: dict) -> Union[np.ndarray, dict]:
+        formatted_obs_space = np.array([])
+        hist_labels = [
+            # "pkt_incoming",
+            "dropped_pkts",
+            # "pkt_effective_thr",
+            "buffer_occupancies",
+            # "spectral_efficiencies",
+        ]
+        for hist_label in hist_labels:
+            if hist_label == "spectral_efficiencies":
+                formatted_obs_space = np.append(
+                    formatted_obs_space,
+                    np.squeeze(np.sum(obs_space[hist_label], axis=2)),
+                    axis=0,
+                )
+            else:
+                formatted_obs_space = np.append(
+                    formatted_obs_space, obs_space[hist_label], axis=0
+                )
+
         return {
-            "player_0": np.zeros(4, dtype=np.float64),
-            "player_1": np.zeros(4, dtype=np.float64),
+            "player_0": formatted_obs_space,
+            "player_1": formatted_obs_space,
         }
 
     def calculate_reward(self, obs_space: dict) -> float:
-        return 0
+        reward = -np.sum(obs_space["dropped_pkts"], dtype=float)
+        return reward
 
     def action_format(self, action: Union[np.ndarray, dict]) -> np.ndarray:
         assert isinstance(action, dict), "Action must be a dictionary"

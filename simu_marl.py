@@ -42,19 +42,25 @@ marl_comm_env.comm_env.set_agent_functions(
 
 register_env("marl_comm_env", lambda config: PettingZooEnv(marl_comm_env))
 
-config = PPOConfig().environment("marl_comm_env").framework("torch")
+config = (
+    PPOConfig()
+    .rollouts(num_rollout_workers=1)
+    .resources(num_gpus=0)
+    .environment("marl_comm_env")
+    .framework("torch")
+)
 
 algo = config.build()
 
-total_train_steps = 10
+total_train_steps = 1
 for _ in range(total_train_steps):
-    algo.train()
-pretty_print(algo.evaluate())
+    result = algo.train()
+    print(pretty_print(result))
 
-# marl_comm_env.reset(seed=seed)
-# for agent in marl_comm_env.agent_iter():
-#     obs, reward, termination, truncation, info = marl_comm_env.last()
-#     if termination:
-#         break
-#     sched_decision = marl_test_agent.step(agent, obs)
-#     marl_comm_env.step(sched_decision)
+marl_comm_env.reset(seed=seed)
+for agent in marl_comm_env.agent_iter():
+    obs, reward, termination, truncation, info = marl_comm_env.last()
+    if termination:
+        break
+    sched_decision = np.array(algo.compute_single_action(obs))
+    marl_comm_env.step(sched_decision)
