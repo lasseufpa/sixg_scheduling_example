@@ -1,11 +1,8 @@
 import numpy as np
-from pettingzoo.test import api_test, seed_test
-from ray import air, tune
-from ray.rllib.algorithms.ppo import PPO, PPOConfig, PPOTorchPolicy
+from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.env import PettingZooEnv
 from ray.tune.logger import pretty_print
 from ray.tune.registry import register_env
-from tqdm import tqdm
 
 from agents.marl_test import MARLTest
 from associations.simple import SimpleAssociation
