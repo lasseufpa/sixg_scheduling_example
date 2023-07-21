@@ -37,11 +37,11 @@ marl_comm_env.comm_env.set_agent_functions(
     marl_test_agent.calculate_reward,
 )
 
-register_env("marl_comm_env", lambda config: PettingZooEnv(marl_comm_env))
+register_env("marl_comm_env", lambda config: marl_comm_env)
 
 config = (
     PPOConfig()
-    .rollouts(num_rollout_workers=1)
+    .rollouts(num_rollout_workers=0, enable_connectors=False)
     .resources(num_gpus=0)
     .environment("marl_comm_env")
     .framework("torch")
@@ -50,14 +50,17 @@ config = (
 algo = config.build()
 
 total_train_steps = 1
-for _ in range(total_train_steps):
+for i in range(total_train_steps):
     result = algo.train()
     print(pretty_print(result))
 
-marl_comm_env.reset(seed=seed)
-for agent in marl_comm_env.agent_iter():
-    obs, reward, termination, truncation, info = marl_comm_env.last()
-    if termination:
+total_test_steps = 10
+obs, _ = marl_comm_env.reset(seed=seed)
+for step in np.arange(total_test_steps):
+    obs = marl_comm_env.observation_space.sample()
+    sched_decision = algo.compute_actions(obs)
+    obs, reward, terminated, truncated, info = marl_comm_env.step(
+        sched_decision
+    )
+    if terminated["__all__"]:
         break
-    sched_decision = np.array(algo.compute_single_action(obs))
-    marl_comm_env.step(sched_decision)

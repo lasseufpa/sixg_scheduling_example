@@ -19,13 +19,11 @@ class MARRTest(Agent):
             env, max_number_ues, max_number_basestations, num_available_rbs
         )
 
-    def step(
-        self, agent: str, obs_space: Optional[Union[np.ndarray, dict]]
-    ) -> np.ndarray:
-        if agent == "player_0":  # Basestation 1
-            return np.array([[1, 0], [0, 1]])
-        else:  # Basestation 2
-            return np.array([[1, 0], [0, 1]])
+    def step(self, obs_space: Optional[Union[np.ndarray, dict]]) -> dict:
+        return {
+            "player_0": np.array([[1, 0], [0, 1]]),
+            "player_1": np.array([[1, 0], [0, 1]]),
+        }
 
     def obs_space_format(self, obs_space: dict) -> Union[np.ndarray, dict]:
         return {

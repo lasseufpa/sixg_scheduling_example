@@ -10,6 +10,7 @@ from sixg_radio_mgmt import MARLCommEnv
 from traffics.simple import SimpleTraffic
 
 seed = 10
+number_steps = 10
 
 marl_comm_env = MARLCommEnv(
     SimpleChannel,
@@ -17,30 +18,29 @@ marl_comm_env = MARLCommEnv(
     SimpleMobility,
     SimpleAssociation,
     "simple",
-    "agent_marl_test",
+    "agent_marr_test",
     seed,
     obs_space=MARRTest.get_obs_space,
     action_space=MARRTest.get_action_space,
     number_agents=2,
 )
-marl_test_agent = MARRTest(
+marr_test_agent = MARRTest(
     marl_comm_env,
     marl_comm_env.comm_env.max_number_ues,
     marl_comm_env.comm_env.max_number_basestations,
     marl_comm_env.comm_env.num_available_rbs,
 )
 marl_comm_env.comm_env.set_agent_functions(
-    marl_test_agent.obs_space_format,
-    marl_test_agent.action_format,
-    marl_test_agent.calculate_reward,
+    marr_test_agent.obs_space_format,
+    marr_test_agent.action_format,
+    marr_test_agent.calculate_reward,
 )
 
-api_test(marl_comm_env, num_cycles=1000, verbose_progress=False)
-
-marl_comm_env.reset(seed=seed)
-for agent in marl_comm_env.agent_iter():
-    obs, reward, termination, truncation, info = marl_comm_env.last()
-    if termination:
+obs, _ = marl_comm_env.reset(seed=seed)
+for step in np.arange(number_steps):
+    sched_decision = marr_test_agent.step(obs)
+    obs, reward, terminated, truncated, info = marl_comm_env.step(
+        sched_decision
+    )
+    if terminated["__all__"]:
         break
-    sched_decision = marl_test_agent.step(agent, obs)
-    marl_comm_env.step(sched_decision)

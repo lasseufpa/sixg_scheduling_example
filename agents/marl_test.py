@@ -53,8 +53,11 @@ class MARLTest(Agent):
             "player_1": formatted_obs_space,
         }
 
-    def calculate_reward(self, obs_space: dict) -> float:
-        reward = -np.sum(obs_space["dropped_pkts"], dtype=float)
+    def calculate_reward(self, obs_space: dict) -> dict:
+        reward = {
+            "player_0": -np.sum(obs_space["dropped_pkts"], dtype=float),
+            "player_1": -np.sum(obs_space["dropped_pkts"], dtype=float),
+        }
         return reward
 
     def action_format(self, action: Union[np.ndarray, dict]) -> np.ndarray:
@@ -80,7 +83,6 @@ class MARLTest(Agent):
 
             return action_bs_writtable
 
-        # print(action["player_0"].shape)
         basestation_1 = select_ue(np.reshape(action["player_0"], (2, 2)))
         basestation_2 = select_ue(np.reshape(action["player_1"], (2, 2)))
 
@@ -92,19 +94,23 @@ class MARLTest(Agent):
         )
 
     @staticmethod
-    def get_action_space() -> dict:
-        return {
-            "player_0": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
-            "player_1": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
-        }
+    def get_action_space() -> spaces.Dict:
+        return spaces.Dict(
+            {
+                "player_0": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
+                "player_1": spaces.Box(low=-1, high=1, shape=(2 * 2,)),
+            }
+        )
 
     @staticmethod
-    def get_obs_space() -> dict:
-        return {
-            "player_0": spaces.Box(
-                low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
-            ),
-            "player_1": spaces.Box(
-                low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
-            ),
-        }
+    def get_obs_space() -> spaces.Dict:
+        return spaces.Dict(
+            {
+                "player_0": spaces.Box(
+                    low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
+                ),
+                "player_1": spaces.Box(
+                    low=0, high=np.inf, shape=(2 * 2,), dtype=np.float64
+                ),
+            }
+        )
